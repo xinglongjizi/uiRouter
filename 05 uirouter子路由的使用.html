@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body ng-app="app">
+<a ui-sref="index">首页</a>
+<a ui-sref="list">列表页</a>
+<div ui-view></div>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+<script>
+  angular.module("app",["ui.router"])
+    .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
+      $stateProvider
+        .state({
+          url:"/index",
+          templateUrl:"indexTpl",
+          name:"index"
+        })
+        .state({
+          url:"/list",
+          templateUrl:"listTpl",
+          name:"list"
+        })
+        .state({
+          url:"/article",
+          templateUrl:"articleTpl",
+          name:"list.article"
+        })
+        .state({
+          url:"/category",
+          templateUrl:"categoryTpl",
+          name:"list.category"
+        })
+      $urlRouterProvider.otherwise("/index");
+    }])
+</script>
+<script type="text/ng-template" id="indexTpl">
+  <div>我是首页</div>
+</script>
+<script type="text/ng-template" id="listTpl">
+  <div>我是列表页内容</div>
+  <a ui-sref="list.article">详情页</a>
+  <a ui-sref="list.category">分类页</a>
+  <div ui-view></div>
+</script>
+<script type="text/ng-template" id="articleTpl">
+  <div>我是详情页内容</div>
+</script>
+<script type="text/ng-template" id="categoryTpl">
+  <div>我是分类页的内容</div>
+</script>
+</body>
+</html>

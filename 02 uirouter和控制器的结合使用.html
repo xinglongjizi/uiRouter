@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body ng-app="demo">
+
+<a ui-sref="index">首页</a>
+<a ui-sref="list">列表页</a>
+<div ui-view></div>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+<script>
+  angular.module("demo",["ui.router"])
+    .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
+       $stateProvider
+         .state({
+           url:"/index",
+           template:"<div>我是首页{{msg}}</div>",
+           name:"index",
+           controller:"indexCtrl"
+         })
+         .state({
+           url:"/list",
+           template:"<div>我是列表页{{msg}}</div>",
+           name:"list",
+           controller:"listCtrl"
+         })
+      $urlRouterProvider.otherwise("/index");
+    }])
+    .controller("indexCtrl",["$scope",function ($scope) {
+      $scope.msg = "indexCtrl";
+    }])
+    .controller("listCtrl",["$scope",function ($scope) {
+      $scope.msg = "listCtrl";
+    }])
+</script>
+</body>
+</html>

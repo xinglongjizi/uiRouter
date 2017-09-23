@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body ng-app="app">
+<div ui-view></div>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+<script>
+  angular.module("app",["ui.router"])
+    .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
+      $stateProvider
+        .state({
+          url:"/nav",
+          templateUrl:"navTpl",
+          name:"nav",
+          abstract:true
+        })
+        .state({
+          url:"/index",
+          templateUrl:"indexTpl",
+          name:"nav.index"
+        })
+        .state({
+          url:"/list",
+          templateUrl:"listTpl",
+          name:"nav.list",
+          abstract:true
+        })
+        .state({
+          url:"/comment",
+          templateUrl:"commentTpl",
+          name:"nav.list.comment"
+        })
+        .state({
+          url:"/skill",
+          templateUrl:"skillTpl",
+          name:"nav.list.skill"
+        })
+        .state({
+          url:"/article",
+          templateUrl:"articleTpl",
+          name:"article"
+        })
+      $urlRouterProvider.otherwise("/nav/index");
+    }])
+</script>
+<script type="text/ng-template" id="navTpl">
+  <a ui-sref="nav.index">首页</a>
+  <a ui-sref="nav.list.comment">列表页</a>
+  <div ui-view></div>
+</script>
+<script type="text/ng-template" id="indexTpl">
+  <div>我是首页</div>
+</script>
+<script type="text/ng-template" id="listTpl">
+  <div>我是列表页</div>
+  <div><a ui-sref="article">详情页</a></div>
+  <a ui-sref="nav.list.comment">评论区</a>
+  <a ui-sref="nav.list.skill">技术区</a>
+  <div ui-view></div>
+</script>
+<script type="text/ng-template" id="commentTpl">
+  <div>我是评论</div>
+</script>
+<script type="text/ng-template" id="skillTpl">
+  <div>我是技术大牛</div>
+</script>
+<script type="text/ng-template" id="articleTpl">
+  <div>我是article页,此时导航栏消失</div>
+</script>
+</body>
+</html>

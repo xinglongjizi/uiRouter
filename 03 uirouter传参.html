@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body ng-app="app">
+
+<a ui-sref="index">首页</a>
+<a ui-sref="list">列表页</a>
+<div ui-view></div>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+<script>
+  angular.module("app",["ui.router"])
+    .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
+      $stateProvider
+        .state({
+          url:"/index",
+          templateUrl:"indexTpl",
+          name:"index"
+        })
+        .state({
+          url:"/list",
+          templateUrl:"listTpl",
+          name:"list"
+        })
+        .state({
+          url:"/article/:id/:title",
+          templateUrl:"articleTpl",
+          name:"article",
+          controller:"articleCtrl"
+        })
+      $urlRouterProvider.otherwise("/index");
+
+    }])
+    .controller("articleCtrl",["$scope","$stateParams",function ($scope,$stateParams) {
+      $scope.msg = "我是详情页";
+      $scope.title = "标题为："+ $stateParams.title;
+      $scope.id = "id为:" + $stateParams.id;
+
+    }])
+</script>
+<script type="text/ng-template" id="indexTpl">
+  <div>我是首页</div>
+</script>
+<script type="text/ng-template" id="listTpl">
+  <ul>
+    <li><a ui-sref="article({id:1,title:'第一篇'})">第一篇</a></li>
+    <li><a ui-sref="article({id:2,title:'第二篇'})">第二篇</a></li>
+    <li><a ui-sref="article({id:3,title:'第三篇'})">第三篇</a></li>
+  </ul>
+</script>
+<script type="text/ng-template" id="articleTpl">
+  <div>{{msg}}</div>
+  <div>{{title}}</div>
+  <div>{{id}}</div>
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body ng-app="app">
+<a ui-sref="index">首页</a>
+<a ui-sref="list">列表页</a>
+<div ui-view></div>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+<script>
+  angular.module("app",["ui.router"])
+    .config(["$stateProvider",function ($stateProvider) {
+      $stateProvider
+        .state({
+          url:"/index",
+          templateUrl:"indexTpl",
+          name:"index"
+        })
+        .state({
+          url:"/list",
+          name:"list",
+          templateUrl:"listTpl"
+        })
+        .state({
+          url:"/comment",
+          name:"list.comment",
+          views:{
+            "view-a":{
+              templateUrl:"commentATpl"
+            },
+            "view-b":{
+              templateUrl:"commentBTpl"
+            }
+          }
+        })
+        .state({
+          url:"/skill",
+          name:"list.skill",
+          views:{
+            "view-a":{
+              templateUrl:"skillATpl"
+            },
+            "view-b":{
+              templateUrl:"skillBTpl"
+            }
+          }
+        })
+    }])
+</script>
+<script type="text/ng-template" id="indexTpl">
+  <div>我是首页</div>
+</script>
+<script type="text/ng-template" id="listTpl">
+  <div>我是列表页</div>
+  <a ui-sref="list.comment">评论区</a>
+  <a ui-sref="list.skill">技术区</a>
+  <div ui-view="view-a"></div>
+  <div ui-view="view-b"></div>
+</script>
+<script type="text/ng-template" id="commentATpl">
+  <div>我是评论view-A区内容</div>
+</script>
+<script type="text/ng-template" id="commentBTpl">
+  <div>我是评论view-B区内容</div>
+</script>
+<script type="text/ng-template" id="skillATpl">
+  <div>我是技术view-A区内容</div>
+</script>
+<script type="text/ng-template" id="skillBTpl">
+  <div>我是技术view-B区内容</div>
+</script>
+</body>
+</html>
