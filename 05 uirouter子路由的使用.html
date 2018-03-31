@@ -10,6 +10,14 @@
 
     <div ui-view></div>
 
+    <!-- 
+        注意，配置路由时，一定是先有   
+        <a ui-sref="xxx">xxx</a>
+        <a ui-sref="yyy">yyy</a>
+        <div ui-view></div> 
+        这种东西，才去为它配置路由的
+        这样在页面上看着来配置，一层一层的来，就不会那么抽象
+    -->
 
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
