@@ -1,56 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+<meta charset="UTF-8">
 </head>
 <body ng-app="app">
 
-<a ui-sref="index">首页</a>
-<a ui-sref="list">列表页</a>
-<div ui-view="view-a"></div>
-<div ui-view="view-b"></div>
+    <a ui-sref="index">首页</a>
+    <a ui-sref="list">列表页</a>
+
+    <!-- 两个并列的ui-view，那么就得设置名称来区分了 -->
+    <div ui-view="view-a"></div>
+    <div ui-view="view-b"></div>
+
+
+
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+
 <script>
-  angular.module("app",["ui.router"])
+    angular.module("app",["ui.router"])
     .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
-      $stateProvider
+
+        $stateProvider
+
         .state({
-          url:"/index",
-          name:"index",
-          views:{
-//            "view-a":{
-//              templateUrl:"indexATpl",
-//              controller:"indexACtrl"
-//            },
-            "view-b":{
-              templateUrl:"indexBTpl",
-              controller:"indexBCtrl"
-            }
-          }
-        })
-        .state({
-          url:"/list",
-          name:"list",
-          views:{
-            "view-a":{
-              template:"<div>我是list-view-a里面的内容</div>"
+            name:"index", // 对应a标签的ui-sref值
+            url:"/index", // 设置地址栏的锚点值，也可以不取名为 /index, 也可以是/i 或/a等你喜欢的.因为想名字也是个头疼的事，那就取名与ui-sref相同吧
+
+            // 通过views来设置每个ui-view中的模板内容
+            views:{
+                "view-b":{
+                    templateUrl:"indexBTpl",
+                    controller:"indexBCtrl",
+                },
             },
-            "view-b":{
-              template:"<div>我是list-view-b里面的内容</div>"
-            }
-          }
         })
-      $urlRouterProvider.otherwise("/index");
+
+        .state({
+            name:"list",
+            url:"/list",
+
+            // 通过views来设置每个ui-view中的模板内容
+            views:{
+                "view-a":{
+                    template:"<div>我是list-view-a里面的内容</div>"
+                },
+                "view-b":{
+                    template:"<div>我是list-view-b里面的内容</div>"
+                },
+            },
+        });
+
+        $urlRouterProvider.otherwise("/index");
     }])
-    .controller("indexACtrl",["$scope",function ($scope) {
-      $scope.msg = "我是index-view-a里面的内容";
-    }])
+
     .controller("indexBCtrl",["$scope",function ($scope) {
-      $scope.msg = "我是index-view-b里面的内容";
-    }])
+        $scope.msg = "我是index-view-b里面的内容";
+    }]);
 </script>
+
+
 <script type="text/ng-template" id="indexATpl">
   <div>{{msg}}</div>
 </script>
