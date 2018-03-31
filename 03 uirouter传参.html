@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+<meta charset="UTF-8">
 </head>
 <body ng-app="app">
 
-<a ui-sref="index">首页</a>
-<a ui-sref="list">列表页</a>
-<div ui-view></div>
+
+    <a ui-sref="index">首页</a>
+    <a ui-sref="list">列表页</a>
+
+    <div ui-view></div>
+
+
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+
 <script>
-  angular.module("app",["ui.router"])
+    angular.module("app",["ui.router"])
+
     .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
-      $stateProvider
+        $stateProvider
         .state({
-          url:"/index",
-          templateUrl:"indexTpl",
-          name:"index"
+            name:"index", 
+            url:"/index", 
+            templateUrl:"indexTpl"
         })
+
         .state({
-          url:"/list",
-          templateUrl:"listTpl",
-          name:"list"
+            url:"/list",
+            templateUrl:"listTpl",
+            name:"list"
         })
+
         .state({
-          url:"/article/:id/:title",
-          templateUrl:"articleTpl",
-          name:"article",
-          controller:"articleCtrl"
+            url:"/article/:id/:title",   // 对应url的写法
+            templateUrl:"articleTpl",
+            name:"article",
+            controller:"articleCtrl"
         })
-      $urlRouterProvider.otherwise("/index");
+
+        // 如果地址栏的URl都不与定义的状态匹配，则跳转到 /index url对应的路由
+        $urlRouterProvider.otherwise("/index");
 
     }])
-    .controller("articleCtrl",["$scope","$stateParams",function ($scope,$stateParams) {
-      $scope.msg = "我是详情页";
-      $scope.title = "标题为："+ $stateParams.title;
-      $scope.id = "id为:" + $stateParams.id;
 
-    }])
+    // 控制器中注入$stateParams服务，获取路由中定义的参数
+    .controller("articleCtrl",["$scope","$stateParams",function ($scope, $stateParams) {
+        $scope.msg = "我是详情页";
+        $scope.title = "标题为："+ $stateParams.title;
+        $scope.id = "id为:" + $stateParams.id;
+    }]);
+
 </script>
+<!-- 用script定义模板 -->
 <script type="text/ng-template" id="indexTpl">
   <div>我是首页</div>
 </script>
+
+<!-- 注意参数在标签的ui-sref中的写法 -->
 <script type="text/ng-template" id="listTpl">
   <ul>
     <li><a ui-sref="article({id:1,title:'第一篇'})">第一篇</a></li>
@@ -51,6 +65,8 @@
     <li><a ui-sref="article({id:3,title:'第三篇'})">第三篇</a></li>
   </ul>
 </script>
+
+
 <script type="text/ng-template" id="articleTpl">
   <div>{{msg}}</div>
   <div>{{title}}</div>
