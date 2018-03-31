@@ -1,73 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+<meta charset="UTF-8">
 </head>
 <body ng-app="app">
-<div ui-view></div>
+
+
+    <div ui-view></div>
+
+
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+
 <script>
-  angular.module("app",["ui.router"])
-    .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
-      $stateProvider
+    var app = angular.module("app",["ui.router"]);
+    
+    app.config(["$stateProvider", "$urlRouterProvider",function ($stateProvider, $urlRouterProvider) {
+        /*
+        注意，上面的视图，一来就没有a标签来点击切换“state”，直接就是只有一个ui-view div
+        因此，我们的
+        $urlRouterProvider.otherwise("/nav");
+        配置就很关键了，如果浏览器地址栏都不匹配，就跳到'/nav'这个锚点url对应的“state”
+        相当于把name为nav的“state”作为默认的...
+        */
+
+      // $urlRouterProvider.otherwise("/nav/index");
+      $urlRouterProvider.otherwise("/nav");
+
+        $stateProvider
         .state({
-          url:"/nav",
-          templateUrl:"navTpl",
-          name:"nav",
-          abstract:true
+            name:"nav",
+            url:"/nav",
+            templateUrl:"navTpl",
+            // abstract:true // abstract字面意思“抽象”
         })
+
+        .state('nav.index', {
+            url:"/index",
+            templateUrl:"indexTpl"
+        })
+
         .state({
-          url:"/index",
-          templateUrl:"indexTpl",
-          name:"nav.index"
+            name:"nav.list",
+            url:"/list",
+            templateUrl:"listTpl",
         })
-        .state({
-          url:"/list",
-          templateUrl:"listTpl",
-          name:"nav.list",
-          abstract:true
-        })
-        .state({
-          url:"/comment",
-          templateUrl:"commentTpl",
-          name:"nav.list.comment"
-        })
+
         .state({
           url:"/skill",
           templateUrl:"skillTpl",
           name:"nav.list.skill"
         })
+
+        .state({
+          url:"/comment",
+          templateUrl:"commentTpl",
+          name:"nav.list.comment"
+        })
+
         .state({
           url:"/article",
           templateUrl:"articleTpl",
           name:"article"
-        })
-      $urlRouterProvider.otherwise("/nav/index");
+        });
+
     }])
 </script>
+
+
 <script type="text/ng-template" id="navTpl">
-  <a ui-sref="nav.index">首页</a>
-  <a ui-sref="nav.list.comment">列表页</a>
-  <div ui-view></div>
+    <a ui-sref="nav.index">首页</a>
+    <a ui-sref="nav.list">列表页</a>
+    <div ui-view></div>
 </script>
+
+
 <script type="text/ng-template" id="indexTpl">
   <div>我是首页</div>
 </script>
+
+
 <script type="text/ng-template" id="listTpl">
-  <div>我是列表页</div>
-  <div><a ui-sref="article">详情页</a></div>
-  <a ui-sref="nav.list.comment">评论区</a>
-  <a ui-sref="nav.list.skill">技术区</a>
-  <div ui-view></div>
+    <div>我是列表页</div>
+    <a ui-sref="article">详情页</a>
+    <a ui-sref="nav.list.skill">技术区</a>
+    <a ui-sref="nav.list.comment">评论区</a>
+    
+    <div ui-view></div>
+</script>
+
+<script type="text/ng-template" id="skillTpl">
+  <div>我是技术大牛</div>
 </script>
 <script type="text/ng-template" id="commentTpl">
   <div>我是评论</div>
 </script>
-<script type="text/ng-template" id="skillTpl">
-  <div>我是技术大牛</div>
-</script>
+
 <script type="text/ng-template" id="articleTpl">
   <div>我是article页,此时导航栏消失</div>
 </script>
