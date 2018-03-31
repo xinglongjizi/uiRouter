@@ -1,38 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+<meta charset="UTF-8">
 </head>
 <body ng-app="demo">
-<!--ui-sref对应的值是路由配置中name的值，angularjs会根据这个名字找到对应的路由配置项中的锚点的值（即url的值）,然后再正确的解析到a标签,生成href。-->
-<a ui-sref="index">首页</a>
-<a ui-sref="list">列表页</a>
-<div ui-view></div>
+
+
+<!--
+    ui-sref的值对应的是路由state配置中name的值
+    angularjs会根据这个名字找到对应的路由配置项中的锚点的值（即url的值）,然后再正确的解析到a标签,生成href
+-->
+
+  <a ui-sref="index">首页</a>
+  <a ui-sref="list">列表页</a>
+  
+  <div ui-view></div>
+
+
+
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+
 <script>
-  // 创建模块对象，并引入依赖模块
-  angular.module("demo",["ui.router"])
+    
+    angular.module("demo", ["ui.router"])
+
     // 配置路由
-    .config(["$stateProvider",function ($stateProvider) {
-       // $stateProvider 是路由配置对象
-      $stateProvider
-        // 配置锚点与跳转页面之间的关系
+    .config(["$stateProvider",function ($stateProvider){
+
+        // $stateProvider 是路由配置对象
+        $stateProvider
+        
         .state({
-          // url对应的是锚点值
-          url:"/index",
-          // template对应首页模板
-          template:"<div>我是首页</div>",
-          // name 是必填项
-          name:"index"
+            name:"index",      // 对应a标签的ui-sref的值, 即设置这个“state”对应的是哪个a标签超链接
+            url:"/index",      // 设置这个“state”对应的锚点值, 即地址栏 # 后面的，但是ui.router多了个!号
+            template:"<div>我是首页</div>",
         })
+
         .state({
-          url:"/list",
-          template:"<div>我是列表页</div>",
-          name:"list"
-        })
-    }])
+            name:"list",
+            url:"/list",
+            template:"<div>我是列表页</div>",
+        });
+
+        /*
+            貌似这里定义state的方式有点老了，新的定义是
+
+            .state('index', {
+                url: '/index',
+                template: '<div>首页</div>'
+            });
+
+            第一个参对应老式写法的name字段, 第二个参数对象里的字段对应老式写法的字段
+
+            当然老式写法在新版本也是可以的，因为新版本的uiRouter肯定会做向下兼容的
+
+        */
+
+    }]);
+
 </script>
 </body>
 </html>
