@@ -1,54 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+<meta charset="UTF-8">
 </head>
 <body ng-app="app">
-<a ui-sref="index">首页</a>
-<a ui-sref="list">列表页</a>
-<div ui-view></div>
+
+    <a ui-sref="index">首页</a>
+    <a ui-sref="list">列表页</a>
+
+    <div ui-view></div>
+
+
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/angular-ui-router/angular-ui-router.min.js"></script>
+
 <script>
-  angular.module("app",["ui.router"])
-    .config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
-      $stateProvider
+    var app = angular.module("app",["ui.router"]);
+
+    app.config(["$stateProvider","$urlRouterProvider",function ($stateProvider,$urlRouterProvider) {
+
+        $stateProvider
         .state({
-          url:"/index",
-          templateUrl:"indexTpl",
-          name:"index"
+            url:"/index",
+            templateUrl:"indexTpl",
+            name:"index"
         })
+
         .state({
-          url:"/list",
-          templateUrl:"listTpl",
-          name:"list"
+            name:"list",
+            url:"/list",
+            templateUrl:"listTpl"
         })
+
         .state({
-          url:"/article",
-          templateUrl:"articleTpl",
-          name:"list.article"
+            name:"list.article",
+            url:"/article",    // 这里设置的url对应的是锚点值，是在父/list后追加的部分
+            templateUrl:"articleTpl"
         })
+
         .state({
-          url:"/category",
-          templateUrl:"categoryTpl",
-          name:"list.category"
-        })
-      $urlRouterProvider.otherwise("/index");
-    }])
+            url:"/category",
+            templateUrl:"categoryTpl",
+            name:"list.category"
+        });
+
+        $urlRouterProvider.otherwise("/index");
+    }]);
 </script>
+
+
 <script type="text/ng-template" id="indexTpl">
   <div>我是首页</div>
 </script>
+
+    <!-- 
+        注意这里子路由的a标签的ui-sref的写法，因为这里是ui-sref="list"或者说状态为list的子路由a标签，
+        因此就写成list.xxxxx就像js中对象取属性一样，在浏览器中hover在此a标签上，就可以看到angular已将锚点转换成   #!/list/article
+     -->
+     <!-- 
+        此模板内容是点击名为list的状态出现的
+        因此此模板内容的子路由都是list的子路由，因此写法list.xxx
+      -->
+    <!-- 
+        注意，配置路由时，一定是先有   
+        <a ui-sref="xxx">xxx</a>
+        <a ui-sref="yyy">yyy</a>
+        <div ui-view></div> 
+        这种东西，才去为它配置路由的
+        这样在页面上看着来配置，一层一层的来，就不会那么抽象
+    -->
 <script type="text/ng-template" id="listTpl">
-  <div>我是列表页内容</div>
-  <a ui-sref="list.article">详情页</a>
-  <a ui-sref="list.category">分类页</a>
-  <div ui-view></div>
+    <div>我是列表页内容</div>
+    <a ui-sref="list.article">详情页</a>    
+    <a ui-sref="list.category">分类页</a>
+    <div ui-view></div>
 </script>
+
+
 <script type="text/ng-template" id="articleTpl">
   <div>我是详情页内容</div>
 </script>
+
+
 <script type="text/ng-template" id="categoryTpl">
   <div>我是分类页的内容</div>
 </script>
